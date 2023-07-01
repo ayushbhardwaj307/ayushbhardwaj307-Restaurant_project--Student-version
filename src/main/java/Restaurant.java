@@ -65,10 +65,15 @@ public class Restaurant {
     }
 
     //Implementation of feature calculating order value in TDD approach
-    public int calculateOrderTotal(List<String> selectedItems) {
-        int orderTotal  = 0;
-        for (String itemName  : selectedItems ) {
-            orderTotal = orderTotal+ findItemByName(itemName).getPrice();
+    public int calculateOrderTotal(List<String> selectedItems) throws itemNotFoundException {
+    int orderTotal = 0;
+        for(String itemName : selectedItems) {
+        Item item = findItemByName(itemName);
+        if(item != null) {
+            orderTotal += item.getPrice();
+        } else {
+            throw new itemNotFoundException("Item Not Found: "+selectedItems);
+            }
         }
         return orderTotal;
     }

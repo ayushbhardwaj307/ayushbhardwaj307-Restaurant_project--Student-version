@@ -67,7 +67,7 @@ class RestaurantTest {
     //----------Added failing  test case for implementing feature for calculating order value
 
     @Test
-    public void selecting_item_from_menu_should_return_order_cost() {
+    public void selecting_item_from_menu_should_return_order_cost() throws itemNotFoundException {
         List<String> selectedItems = Arrays.asList("Sweet corn soup", "Vegetable lasagne");
         int expectedOrderTotal = 0;
         for(Item item:restaurant.getMenu())
@@ -78,10 +78,20 @@ class RestaurantTest {
     }
 
     @Test
-    public void order_cost_0_when_no_item_selected_by_user() {
+    public void order_cost_0_when_no_item_selected_by_user() throws itemNotFoundException {
         List<String> selectedItems = new ArrayList<>();
         int expectedOrderTotal = 0;
         int orderTotal = restaurant.calculateOrderTotal(selectedItems);
         assertEquals(expectedOrderTotal, orderTotal);
+    }
+    @Test
+    public void calculateOrderTotal_should_throw_itemNotFoundException_for_provided_items_not_present_in_menu () throws itemNotFoundException {
+
+        ArrayList<String> selectedItems = new ArrayList<>();
+        selectedItems.add("Mushroom Masala");
+
+        assertThrows(itemNotFoundException.class,()->{
+            restaurant.calculateOrderTotal(selectedItems);
+        });
     }
 }
